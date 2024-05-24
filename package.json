@@ -3,12 +3,23 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "npx tsx src/index"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.44.1",
-    "@types/node": "^20.12.12"
+    "@types/node": "^20.12.12",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "csvtojson": "^2.0.10",
+    "dotenv": "^16.4.5",
+    "load-json-file": "^7.0.1"
   }
 }
