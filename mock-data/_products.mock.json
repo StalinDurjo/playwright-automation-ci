@@ -1,0 +1,14 @@
+[
+  {
+    "type": "variable",
+    "name": "V-Neck T-Shirt Override",
+    "published": "1",
+    "description": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas."
+  },
+  {
+    "type": "variable",
+    "name": "Another V-Neck T-Shirt Override",
+    "published": "1",
+    "description": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas."
+  }
+]
