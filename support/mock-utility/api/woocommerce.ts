@@ -11,8 +11,7 @@ export default class WoocommerceApi extends MockApi {
   async createProduct(requestBody: FormData) {
     try {
       // API Reference: https://woocommerce.github.io/woocommerce-rest-api-docs/?javascript#products
-      const response = await this.request.post(`${this.baseUrl}/wp-json/wc/v3/products`, requestBody);
-      return await response.data;
+      return await this.request.post(`${this.baseUrl}/wp-json/wc/v3/products`, requestBody);
     } catch (error) {
       console.error(error);
     }
@@ -23,7 +22,7 @@ export default class WoocommerceApi extends MockApi {
       const payload = {
         value: isEnabled === true ? "yes" : "no"
       };
-      await this.request.put(`${this.baseUrl}/wp-json/wc/v3/settings/general/woocommerce_calc_taxes`, payload);
+      return await this.request.put(`${this.baseUrl}/wp-json/wc/v3/settings/general/woocommerce_calc_taxes`, payload);
     } catch (error) {
       console.log(error);
     }
@@ -34,7 +33,7 @@ export default class WoocommerceApi extends MockApi {
       const payload = {
         value: isPriceEnteredWithTax === true ? "yes" : "no"
       };
-      await this.request.put(`${this.baseUrl}/wp-json/wc/v3/settings/tax/woocommerce_prices_include_tax`, payload);
+      return await this.request.put(`${this.baseUrl}/wp-json/wc/v3/settings/tax/woocommerce_prices_include_tax`, payload);
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +44,7 @@ export default class WoocommerceApi extends MockApi {
       const payload = {
         value: isEnabled === true ? "yes" : "no"
       };
-      await this.request.put(`${this.baseUrl}/wp-json/wc/v3/settings/tax/woocommerce_tax_round_at_subtotal`, payload);
+      return await this.request.put(`${this.baseUrl}/wp-json/wc/v3/settings/tax/woocommerce_tax_round_at_subtotal`, payload);
     } catch (error) {
       console.log(error);
     }
@@ -60,13 +59,13 @@ export default class WoocommerceApi extends MockApi {
     name,
     shipping
   }: {
-    country: string;
-    state: string;
-    cities: string[];
-    postcodes: string[];
-    rate: string;
-    name: string;
-    shipping: boolean;
+    country?: string;
+    state?: string;
+    cities?: string[];
+    postcodes?: string[];
+    rate?: string;
+    name?: string;
+    shipping?: boolean;
   }) {
     try {
       const payload = {
@@ -78,7 +77,7 @@ export default class WoocommerceApi extends MockApi {
         name: name,
         shipping: shipping
       };
-      await this.request.post(`${this.baseUrl}/wp-json/wc/v3/taxes`, payload);
+      return await this.request.post(`${this.baseUrl}/wp-json/wc/v3/taxes`, payload);
     } catch (error) {
       console.log(error);
     }
@@ -87,8 +86,7 @@ export default class WoocommerceApi extends MockApi {
   async createShippingZone({ name }: { name: string }) {
     try {
       const payload = { name };
-      const response = await this.request.post(`${this.baseUrl}/wp-json/wc/v3/shipping/zones`, payload);
-      return await response.data();
+      return await this.request.post(`${this.baseUrl}/wp-json/wc/v3/shipping/zones`, payload);
     } catch (error) {
       console.log(error);
     }
@@ -99,8 +97,7 @@ export default class WoocommerceApi extends MockApi {
       const payload = {
         method_id: method
       };
-      const response = await this.request.post(`${this.baseUrl}/wp-json/wc/v3/shipping/zones/${shippingZoneId}/methods`, payload);
-      return await response.data();
+      return await this.request.post(`${this.baseUrl}/wp-json/wc/v3/shipping/zones/${shippingZoneId}/methods`, payload);
     } catch (error) {
       console.log(error);
     }
@@ -116,11 +113,11 @@ export default class WoocommerceApi extends MockApi {
       cost,
       taxStatus
     }: {
-      method: "flat_rate";
-      methodTitle: string;
-      methodDescription: string;
-      cost: string;
-      taxStatus: "taxable" | "none";
+      method?: "flat_rate";
+      methodTitle?: string;
+      methodDescription?: string;
+      cost?: string;
+      taxStatus?: "taxable" | "none";
     }
   ) {
     try {
@@ -133,8 +130,67 @@ export default class WoocommerceApi extends MockApi {
           tax_status: taxStatus
         }
       };
-      const response = await this.request.post(`${this.baseUrl}/wp-json/wc/v3/shipping/zones/${shippingZoneId}/methods/${shippingMethodId}`, payload);
-      return await response.data();
+      return await this.request.post(`${this.baseUrl}/wp-json/wc/v3/shipping/zones/${shippingZoneId}/methods/${shippingMethodId}`, payload);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async deleteShippingZone(shippingZoneId: number) {
+    try {
+      const payload = {
+        force: true
+      };
+      return await this.request.delete({ requestPath: `${this.baseUrl}/wp-json/wc/v3/shipping/zones/${shippingZoneId}`, requestBody: payload });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async deleteTaxRate(taxId: number) {
+    try {
+      const payload = {
+        force: true
+      };
+      return await this.request.delete({ requestPath: `${this.baseUrl}/wp-json/wc/v3/taxes/${taxId}`, requestBody: payload });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async createOrder({
+    paymentMethod
+  }: {
+    paymentMethod?: string;
+    paymentMethodTitle?: string;
+    setPaid?: string;
+    billing?: {
+      firstName?: string;
+      lastName?: string;
+      address1?: string;
+      address2?: string;
+      city?: string;
+      state?: string;
+      postode?: string;
+      country?: string;
+      email?: string;
+      phone?: string;
+    };
+    shipping?: {
+      firstName?: string;
+      lastName?: string;
+      address1?: string;
+      address2?: string;
+      city?: string;
+      state?: string;
+      postcode?: string;
+      country?: string;
+    };
+    lineItems?: { productId?: number; variationId?: number; quantity?: number }[];
+  } = {}) {
+    try {
+      const payload = {};
+      return await this.request.post(`${this.baseUrl}/wp-json/wc/v3/orders`, payload);
     } catch (error) {
       console.log(error);
     }
