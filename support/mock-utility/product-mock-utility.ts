@@ -1,30 +1,8 @@
-import DataLoader from "support/lib/data-loader";
-import { Mode } from "support/types/global";
-import WoocommerceApi from "./api/woocommerce";
-import { testConfig } from "test.config";
+import BaseMockUtility from "./base-mock-utility";
 
-export default class MockUtility {
-  private baseUrl: string;
-  private mode: Mode;
-  private loader: DataLoader;
-  private woocommerceApi: WoocommerceApi;
-  private username: string;
-  private password: string;
-
+export default class ProductMockUtility extends BaseMockUtility {
   constructor({ baseUrl }: { baseUrl: string }) {
-    this.baseUrl = baseUrl;
-    this.loader = new DataLoader({ mockFilePrefix: testConfig.mockFilePrefix, searchFolder: testConfig.mockFileDirectory });
-    this.woocommerceApi = new WoocommerceApi({ baseUrl: this.baseUrl });
-  }
-
-  useMode(mode: Mode) {
-    this.mode = mode;
-  }
-
-  setBasicAuth(username: string, password: string) {
-    this.username = username;
-    this.password = password;
-    this.woocommerceApi.setBasicAuth(this.username, this.password);
+    super({ baseUrl });
   }
 
   async createProducts({ limit }: { limit?: number } = {}) {

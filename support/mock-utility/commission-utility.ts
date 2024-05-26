@@ -1,30 +1,11 @@
-import DataLoader from "support/lib/data-loader";
 import WoocommerceApi from "support/mock-utility/api/woocommerce";
-import { Mode } from "support/types/global";
-import { testConfig } from "test.config";
+import BaseMockUtility from "./base-mock-utility";
 
-export default class CommissionUtil {
-  private baseUrl: string;
-  private mode: Mode;
-  private loader: DataLoader;
-  readonly woocommerceApi: WoocommerceApi;
-  private username: string;
-  private password: string;
+export default class CommissionUtility extends BaseMockUtility {
+  readonly woocommerceApi: WoocommerceApi = this.woocommerceApi;
 
   constructor({ baseUrl }: { baseUrl: string }) {
-    this.baseUrl = baseUrl;
-    this.loader = new DataLoader({ mockFilePrefix: testConfig.mockFilePrefix, searchFolder: testConfig.mockFileDirectory });
-    this.woocommerceApi = new WoocommerceApi({ baseUrl: this.baseUrl });
-  }
-
-  useMode(mode: Mode) {
-    this.mode = mode;
-  }
-
-  setBasicAuth(username: string, password: string) {
-    this.username = username;
-    this.password = password;
-    this.woocommerceApi.setBasicAuth(this.username, this.password);
+    super({ baseUrl });
   }
 
   async getAllLineItemCharges() {
