@@ -1,6 +1,7 @@
 import DataLoader from "support/lib/data-loader";
 import { Mode } from "support/types/global";
 import WoocommerceApi from "./api/woocommerce";
+import { testConfig } from "test.config";
 
 export default class MockUtility {
   private baseUrl: string;
@@ -12,7 +13,7 @@ export default class MockUtility {
 
   constructor({ baseUrl }: { baseUrl: string }) {
     this.baseUrl = baseUrl;
-    this.loader = new DataLoader();
+    this.loader = new DataLoader({ mockFilePrefix: testConfig.mockFilePrefix, searchFolder: testConfig.mockFileDirectory });
     this.woocommerceApi = new WoocommerceApi({ baseUrl: this.baseUrl });
   }
 
