@@ -34,7 +34,7 @@ export default class ApiRequest {
     return this.instance.put(requestPath, requestBody);
   }
 
-  delete(requestPath: string, queryString: string = "") {
-    return this.instance.delete(requestPath, { params: queryString });
+  delete({ requestPath, queryString, requestBody }: { requestPath: string; queryString?: string; requestBody?: unknown }) {
+    return this.instance.delete(requestPath, { params: queryString, data: requestBody });
   }
 }

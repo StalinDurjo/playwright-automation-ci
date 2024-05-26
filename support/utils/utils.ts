@@ -86,3 +86,9 @@ export const searchFiles = (directory: string, extensions: string[], ignoredDire
     console.log(error);
   }
 };
+
+export const toBoolean = (bool: string): boolean => {
+  if (bool === "true") return true;
+  else if (bool === "false") return false;
+  else return undefined;
+};
