@@ -39,7 +39,23 @@ async function runTest() {
     // productId = productResponse.productId;
     // productPrice = productResponse.productPrice;
 
-    await commission.woocommerceApi.createOrder({ paymentMethod: "test", billing: { firstName: "test name" }, lineItems: [{ productId: 2 }] });
+    await commission.woocommerceApi.createOrder({
+      paymentMethod: "bacs",
+      paymentMethodTitle: "Direct Bank Transfer",
+      setPaid: true,
+      billing: {
+        firstName: "John",
+        lastName: "Doe",
+        address1: "969 Market",
+        city: "San Francisco",
+        state: "CA",
+        postode: "94103",
+        country: "US",
+        email: "john.doe@example.com",
+        phone: "(555) 555-5555"
+      },
+      lineItems: [{ productId: 41 }]
+    });
 
     console.log(charge);
   }

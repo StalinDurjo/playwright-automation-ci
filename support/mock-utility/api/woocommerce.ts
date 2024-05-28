@@ -213,7 +213,25 @@ export default class WoocommerceApi extends MockApi {
       }
 
       if (lineItems) {
-        payload["line_items"] = [...lineItems];
+        payload["line_items"] = [];
+
+        lineItems.forEach((lineItem) => {
+          const lineItemObject = {};
+
+          if (lineItem.productId) {
+            lineItemObject["product_id"] = lineItem.productId;
+          }
+
+          if (lineItem.quantity) {
+            lineItemObject["quantity"] = lineItem.quantity;
+          }
+
+          if (lineItem.quantity) {
+            lineItemObject["variation_id"] = lineItem.variationId;
+          }
+
+          payload["line_items"].push(lineItemObject);
+        });
       }
 
       return await this.request.post(`${this.baseUrl}/wp-json/wc/v3/orders`, payload);
