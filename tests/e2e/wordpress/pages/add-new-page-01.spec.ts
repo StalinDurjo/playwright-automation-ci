@@ -1,6 +1,6 @@
 import { test, expect } from "@pages/base/fixtures";
 
-test.describe.only("Pages", async () => {
+test.describe("Pages", async () => {
   test.beforeEach(async ({ wpLoginPage, pageActions }) => {
     await wpLoginPage.goto();
     await pageActions.wordpress.login("admin", "password");
