@@ -80,4 +80,64 @@ export default class CommissionUtility extends BaseMockUtility {
       productTaxStatus: response.tax_status
     };
   }
+
+  async createOrder({
+    paymentMethod,
+    paymentMethodTitle,
+    setPaid,
+    billing,
+    lineItems
+  }: {
+    paymentMethod?: string;
+    paymentMethodTitle?: string;
+    setPaid?: boolean;
+    billing?: {
+      firstName?: string;
+      lastName?: string;
+      address1?: string;
+      address2?: string;
+      city?: string;
+      state?: string;
+      postode?: string;
+      country?: string;
+      email?: string;
+      phone?: string;
+    };
+    shipping?: {
+      firstName?: string;
+      lastName?: string;
+      address1?: string;
+      address2?: string;
+      city?: string;
+      state?: string;
+      postcode?: string;
+      country?: string;
+    };
+    lineItems?: { productId?: number; variationId?: number; quantity?: number }[];
+  }) {
+    const response = await (
+      await this.woocommerceApi.createOrder({
+        paymentMethod: paymentMethod,
+        paymentMethodTitle: paymentMethodTitle,
+        setPaid: setPaid,
+        billing: {
+          firstName: billing.firstName,
+          lastName: billing.lastName,
+          address1: billing.address1,
+          city: billing.city,
+          state: billing.state,
+          postode: billing.postode,
+          country: billing.country,
+          email: billing.email,
+          phone: billing.phone
+        },
+        lineItems: [...lineItems]
+      })
+    ).data;
+
+    return {
+      orderId: response.id,
+      total: response.total
+    };
+  }
 }

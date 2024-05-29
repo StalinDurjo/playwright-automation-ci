@@ -17,6 +17,15 @@ export default class WoocommerceApi extends MockApi {
     }
   }
 
+  async deleteProduct(productId: number) {
+    try {
+      // API Reference: https://woocommerce.github.io/woocommerce-rest-api-docs/?javascript#delete-a-product
+      return await this.request.delete({ requestPath: `${this.baseUrl}/wp-json/wc/v3/products/${productId}` });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async enableTax(isEnabled: boolean) {
     try {
       const payload = {
@@ -159,11 +168,15 @@ export default class WoocommerceApi extends MockApi {
   }
 
   async createOrder({
-    paymentMethod
+    paymentMethod,
+    paymentMethodTitle,
+    setPaid,
+    billing,
+    lineItems
   }: {
     paymentMethod?: string;
     paymentMethodTitle?: string;
-    setPaid?: string;
+    setPaid?: boolean;
     billing?: {
       firstName?: string;
       lastName?: string;
@@ -190,6 +203,46 @@ export default class WoocommerceApi extends MockApi {
   } = {}) {
     try {
       const payload = {};
+      if (paymentMethod) payload["payment_method"] = paymentMethod;
+      if (paymentMethodTitle) payload["payment_method_title"] = paymentMethodTitle;
+      if (setPaid) payload["set_paid"] = setPaid;
+
+      if (billing) {
+        payload["billing"] = {};
+        if (billing.firstName) payload["billing"]["first_name"] = billing.firstName;
+        if (billing.lastName) payload["billing"]["last_name"] = billing.lastName;
+        if (billing.address1) payload["billing"]["address_1"] = billing.address1;
+        if (billing.address2) payload["billing"]["address_2"] = billing.address2;
+        if (billing.city) payload["billing"]["city"] = billing.city;
+        if (billing.state) payload["billing"]["state"] = billing.state;
+        if (billing.postode) payload["billing"]["postode"] = billing.postode;
+        if (billing.country) payload["billing"]["country"] = billing.country;
+        if (billing.email) payload["billing"]["email"] = billing.email;
+        if (billing.phone) payload["billing"]["phone"] = billing.phone;
+      }
+
+      if (lineItems) {
+        payload["line_items"] = [];
+
+        lineItems.forEach((lineItem) => {
+          const lineItemObject = {};
+
+          if (lineItem.productId) {
+            lineItemObject["product_id"] = lineItem.productId;
+          }
+
+          if (lineItem.quantity) {
+            lineItemObject["quantity"] = lineItem.quantity;
+          }
+
+          if (lineItem.quantity) {
+            lineItemObject["variation_id"] = lineItem.variationId;
+          }
+
+          payload["line_items"].push(lineItemObject);
+        });
+      }
+
       return await this.request.post(`${this.baseUrl}/wp-json/wc/v3/orders`, payload);
     } catch (error) {
       console.log(error);
