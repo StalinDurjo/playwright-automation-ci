@@ -17,6 +17,15 @@ export default class WoocommerceApi extends MockApi {
     }
   }
 
+  async deleteProduct(productId: number) {
+    try {
+      // API Reference: https://woocommerce.github.io/woocommerce-rest-api-docs/?javascript#delete-a-product
+      return await this.request.delete({ requestPath: `${this.baseUrl}/wp-json/wc/v3/products/${productId}` });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async enableTax(isEnabled: boolean) {
     try {
       const payload = {
