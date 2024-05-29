@@ -1,5 +1,5 @@
 import path from "path";
-import { loadJsonFile } from "load-json-file";
+// import { loadJsonFile } from "load-json-file";
 import { csvToJsObject, searchFiles } from "support/utils/utils";
 
 export type FileDetails = {
@@ -123,7 +123,7 @@ export default class DataLoader {
           if (file.fileType === "csv") {
             mockData = await this.applyFilter((await csvToJsObject(file.filePath)) as object[], { reverse, include, exclude });
           } else if (file.fileType === "json") {
-            mockData = await this.applyFilter(await loadJsonFile(file.filePath), { reverse, include, exclude });
+            // mockData = await this.applyFilter(await loadJsonFile(file.filePath), { reverse, include, exclude });
           }
         }
       }
