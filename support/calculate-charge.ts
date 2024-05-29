@@ -27,7 +27,7 @@ export const calculateCharge = ({
   isTaxInclusive = false,
   roundTaxAtSubtotal,
   taxRate,
-  shippingTax,
+  shippingRate,
   taxOnShipping = false,
   allowShippingPerQuantity = false
 }: {
@@ -36,20 +36,31 @@ export const calculateCharge = ({
   isTaxInclusive?: boolean;
   roundTaxAtSubtotal?: boolean;
   taxRate?: number;
-  shippingTax?: number;
+  shippingRate?: number;
   taxOnShipping?: boolean;
   allowShippingPerQuantity?: boolean;
 }) => {
   let total: number;
   let perProductTax: number;
   let totalProductTax: number;
-  let perShippingTax: number;
+  let perShippingRate: number;
   let totalShippingTax: number;
 
   const inclusive = taxInclusive(9.19, 0.07, 1);
   const exclusive = taxExclusive(9.19, 0.07, 1);
-  console.log("inclusive", inclusive);
-  console.log("exclusive", exclusive);
+  // console.log("inclusive", inclusive);
+  // console.log("exclusive", exclusive);
+
+  console.log("calculate charge", {
+    productPrice,
+    productQuantity,
+    isTaxInclusive,
+    roundTaxAtSubtotal,
+    taxRate,
+    shippingRate,
+    taxOnShipping,
+    allowShippingPerQuantity
+  });
 
   return total;
 };
