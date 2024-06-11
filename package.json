@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx tsx index"
+    "dev": "npx tsx index",
+    "wp-env": "wp-env"
+
   },
   "keywords": [],
   "author": "",
@@ -17,6 +19,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@wordpress/env": "^10.0.0",
     "axios": "^1.6.8",
     "csvtojson": "^2.0.10",
     "dotenv": "^16.4.5",
